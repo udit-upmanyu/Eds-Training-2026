@@ -108,6 +108,102 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// BREADCRUMB
+// ---------------------------------------------------------------------------
+
+/**
+ * Builds breadcrumb items from the current page path.
+ * Each path segment becomes one crumb. The page title (from <title> or
+ * the "og:title" / "breadcrumbtitle" metadata) is used for the last crumb.
+ *
+ * @returns {Array<{label: string, url: string|null}>}
+ */
+function buildBreadcrumbItems() {
+  const { pathname } = window.location;
+
+  // Honour an explicit breadcrumb override defined in page metadata
+  // (add  "breadcrumbtitle: My Custom Label"  to the page's metadata block)
+  const customTitle = getMetadata('breadcrumbtitle')
+    || getMetadata('og:title')
+    || document.title
+    || '';
+
+  // Split path into non-empty segments: "/a/b/c" → ["a","b","c"]
+  const segments = pathname.split('/').filter(Boolean);
+
+  // Always start with Home
+  const items = [{ label: 'Home', url: '/' }];
+
+  segments.forEach((segment, idx) => {
+    const url = `/${segments.slice(0, idx + 1).join('/')}`;
+    const isLast = idx === segments.length - 1;
+
+    // Human-readable label: kebab-case → Title Case
+    const autoLabel = segment
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+    items.push({
+      label: isLast ? customTitle || autoLabel : autoLabel,
+      // Last crumb has no link (current page)
+      url: isLast ? null : url,
+    });
+  });
+
+  return items;
+}
+
+/**
+ * Creates and returns the breadcrumb <nav> element.
+ * Skips rendering on the home page (only one crumb = "Home").
+ *
+ * @returns {Element|null}
+ */
+function createBreadcrumb() {
+  const items = buildBreadcrumbItems();
+
+  // No breadcrumb needed on the home page
+  if (items.length <= 1) return null;
+
+  const nav = document.createElement('nav');
+  nav.className = 'breadcrumb';
+  nav.setAttribute('aria-label', 'Breadcrumb');
+
+  const ol = document.createElement('ol');
+  ol.className = 'breadcrumb-list';
+
+  items.forEach(({ label, url }, idx) => {
+    const li = document.createElement('li');
+    li.className = 'breadcrumb-item';
+
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.textContent = label;
+      li.append(a);
+    } else {
+      // Current page — mark as active for a11y
+      const span = document.createElement('span');
+      span.textContent = label;
+      span.setAttribute('aria-current', 'page');
+      li.append(span);
+    }
+
+    // Separator is added via CSS (::after pseudo-element) so it stays out of
+    // the accessibility tree. No extra markup needed here.
+
+    ol.append(li);
+  });
+
+  nav.append(ol);
+  return nav;
+}
+
+// ---------------------------------------------------------------------------
+// DECORATE (main export)
+// ---------------------------------------------------------------------------
+
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -167,5 +263,12 @@ export default async function decorate(block) {
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+
+  // ── Breadcrumb ──────────────────────────────────────────────────────────
+  // Rendered outside the <nav> so it sits beneath the navigation bar.
+  const breadcrumb = createBreadcrumb();
+  if (breadcrumb) navWrapper.append(breadcrumb);
+  // ────────────────────────────────────────────────────────────────────────
+
   block.append(navWrapper);
 }
