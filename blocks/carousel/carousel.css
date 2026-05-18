@@ -1,0 +1,167 @@
+/* carousel.css */
+
+.carousel {
+  background-color: #0d1117;
+  color: #ffffff;
+  padding: 60px 40px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Hero text section */
+.carousel-hero {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto 48px;
+}
+
+.carousel-hero h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0 0 20px;
+  line-height: 1.3;
+}
+
+.carousel-hero p {
+  font-size: 1rem;
+  color: #c0c8d8;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Carousel wrapper */
+.carousel-track-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Navigation arrows */
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 18px;
+}
+
+.carousel-nav:hover {
+  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.carousel-nav.prev {
+  left: -52px;
+}
+
+.carousel-nav.next {
+  right: -52px;
+}
+
+/* Cards track */
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+  gap: 24px;
+}
+
+/* Individual card */
+.carousel-card {
+  background-color: #1c2333;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 28px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  /* Show 2 cards by default — each takes ~half width minus gap */
+  width: calc(50% - 12px);
+}
+
+.carousel-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 14px;
+}
+
+.carousel-card p {
+  font-size: 0.9rem;
+  color: #a8b4c8;
+  line-height: 1.7;
+  margin: 0 0 auto;
+  flex-grow: 1;
+}
+
+.carousel-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  color: #6ea8fe;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.carousel-card a::after {
+  content: '↗';
+  font-size: 0.8rem;
+}
+
+.carousel-card a:hover {
+  color: #a8c8fe;
+}
+
+/* Dots indicator */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.carousel-dot {
+  width: 28px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, width 0.2s;
+}
+
+.carousel-dot.active {
+  background: #4d8ef0;
+  width: 36px;
+}
+
+/* Responsive: show 1 card on narrow viewports */
+@media (max-width: 640px) {
+  .carousel-card {
+    width: calc(100% - 0px);
+  }
+
+  .carousel-nav.prev {
+    left: 0;
+  }
+
+  .carousel-nav.next {
+    right: 0;
+  }
+}
