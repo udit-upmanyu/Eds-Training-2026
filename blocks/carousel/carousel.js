@@ -21,11 +21,8 @@ export default function decorate(block) {
     ? [...heroCell.querySelectorAll('p')]
     : [];
 
-  const heroTitle =
-    heroParagraphs[0]?.textContent.trim() || '';
-
-  const heroDesc =
-    heroParagraphs[1]?.innerHTML || '';
+  const heroTitle = heroParagraphs[0]?.textContent.trim() || '';
+  const heroDesc = heroParagraphs[1]?.innerHTML || '';
 
   /* =========================
      EXTRACT ALL CARDS
@@ -36,19 +33,14 @@ export default function decorate(block) {
     [...row.querySelectorAll(':scope > div')].forEach((cell) => {
       if (!cell.textContent.trim()) return;
 
-      const title =
-        cell.querySelector('strong')?.textContent.trim() || '';
-
+      const title = cell.querySelector('strong')?.textContent.trim() || '';
       const paragraphs = [...cell.querySelectorAll('p')];
 
       const descElement = paragraphs.find(
-        (p) =>
-          !p.querySelector('strong') &&
-          !p.querySelector('a')
+        (p) => !p.querySelector('strong') && !p.querySelector('a'),
       );
 
       const desc = descElement?.innerHTML || '';
-
       const link = cell.querySelector('a');
 
       const linkHTML = link
@@ -80,7 +72,7 @@ export default function decorate(block) {
 
   function getCardsPerView() {
     const width = window.innerWidth;
-    if(width>= 1500) return 3
+    if (width >= 1500) return 3;
     if (width >= 1024) return 2;
     if (width >= 768) return 2;
     return 1;
@@ -121,7 +113,7 @@ export default function decorate(block) {
           <div class="dell-ai-carousel__slide">
             ${group.map(cardTemplate).join('')}
           </div>
-        `
+        `,
       )
       .join('');
   }
@@ -129,11 +121,7 @@ export default function decorate(block) {
   function buildDots(total, activeIndex) {
     return Array.from({ length: total }, (_, i) => `
       <button
-        class="dell-ai-carousel__dot ${
-          i === activeIndex
-            ? 'dell-ai-carousel__dot--active'
-            : ''
-        }"
+        class="dell-ai-carousel__dot ${i === activeIndex ? 'dell-ai-carousel__dot--active' : ''}"
         aria-label="Go to slide ${i + 1}"
         data-index="${i}"
       ></button>
@@ -190,21 +178,10 @@ export default function decorate(block) {
      ELEMENT REFERENCES
   ========================= */
 
-  const track = block.querySelector(
-    '.dell-ai-carousel__track'
-  );
-
-  const dotsContainer = block.querySelector(
-    '.dell-ai-carousel__dots'
-  );
-
-  const prevButton = block.querySelector(
-    '.dell-ai-carousel__arrow--prev'
-  );
-
-  const nextButton = block.querySelector(
-    '.dell-ai-carousel__arrow--next'
-  );
+  const track = block.querySelector('.dell-ai-carousel__track');
+  const dotsContainer = block.querySelector('.dell-ai-carousel__dots');
+  const prevButton = block.querySelector('.dell-ai-carousel__arrow--prev');
+  const nextButton = block.querySelector('.dell-ai-carousel__arrow--next');
 
   /* =========================
      STATE
@@ -219,30 +196,23 @@ export default function decorate(block) {
   ========================= */
 
   function updateUI() {
-    track.style.transform =
-      `translateX(-${currentSlide * 100}%)`;
+    track.style.transform = `translateX(-${currentSlide * 100}%)`;
 
     dotsContainer
       .querySelectorAll('.dell-ai-carousel__dot')
       .forEach((dot, index) => {
         dot.classList.toggle(
           'dell-ai-carousel__dot--active',
-          index === currentSlide
+          index === currentSlide,
         );
       });
 
     prevButton.disabled = currentSlide === 0;
-
-    nextButton.disabled =
-      currentSlide === totalSlides - 1;
+    nextButton.disabled = currentSlide === totalSlides - 1;
   }
 
   function goToSlide(index) {
-    currentSlide = Math.max(
-      0,
-      Math.min(index, totalSlides - 1)
-    );
-
+    currentSlide = Math.max(0, Math.min(index, totalSlides - 1));
     updateUI();
   }
 
@@ -253,19 +223,13 @@ export default function decorate(block) {
   function buildCarousel() {
     cardsPerView = getCardsPerView();
 
-    const groupedSlides = chunkArray(
-      cards,
-      cardsPerView
-    );
+    const groupedSlides = chunkArray(cards, cardsPerView);
 
     totalSlides = groupedSlides.length;
 
     track.innerHTML = buildSlides(cardsPerView);
 
-    dotsContainer.innerHTML = buildDots(
-      totalSlides,
-      currentSlide
-    );
+    dotsContainer.innerHTML = buildDots(totalSlides, currentSlide);
 
     dotsContainer
       .querySelectorAll('.dell-ai-carousel__dot')
@@ -305,15 +269,13 @@ export default function decorate(block) {
     (e) => {
       touchStartX = e.touches[0].clientX;
     },
-    { passive: true }
+    { passive: true },
   );
 
   track.addEventListener(
     'touchend',
     (e) => {
-      const touchEndX =
-        e.changedTouches[0].clientX;
-
+      const touchEndX = e.changedTouches[0].clientX;
       const diff = touchStartX - touchEndX;
 
       if (Math.abs(diff) < 50) return;
@@ -324,7 +286,7 @@ export default function decorate(block) {
         goToSlide(currentSlide - 1);
       }
     },
-    { passive: true }
+    { passive: true },
   );
 
   /* =========================
