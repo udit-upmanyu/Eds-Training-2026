@@ -49,7 +49,7 @@ export default function decorate(block) {
             href="${link.href}"
             target="_blank"
             rel="noopener"
-            class="dell-ai-carousel__card-link"
+            class="dell-ai-carousel-card-link"
           >
             ${link.textContent.trim()}
           </a>
@@ -90,12 +90,12 @@ export default function decorate(block) {
 
   function cardTemplate(card) {
     return `
-      <article class="dell-ai-carousel__card">
-        <h3 class="dell-ai-carousel__card-title">
+      <article class="dell-ai-carousel-card">
+        <h3 class="dell-ai-carousel-card-title">
           ${card.title}
         </h3>
 
-        <div class="dell-ai-carousel__card-desc">
+        <div class="dell-ai-carousel-card-desc">
           ${card.desc}
         </div>
 
@@ -110,7 +110,7 @@ export default function decorate(block) {
     return grouped
       .map(
         (group) => `
-          <div class="dell-ai-carousel__slide">
+          <div class="dell-ai-carousel-slide">
             ${group.map(cardTemplate).join('')}
           </div>
         `,
@@ -121,7 +121,7 @@ export default function decorate(block) {
   function buildDots(total, activeIndex) {
     return Array.from({ length: total }, (_, i) => `
       <button
-        class="dell-ai-carousel__dot ${i === activeIndex ? 'dell-ai-carousel__dot--active' : ''}"
+        class="dell-ai-carousel-dot ${i === activeIndex ? 'dell-ai-carousel-dot-active' : ''}"
         aria-label="Go to slide ${i + 1}"
         data-index="${i}"
       ></button>
@@ -139,31 +139,31 @@ export default function decorate(block) {
   ========================= */
 
   block.innerHTML = `
-    <div class="dell-ai-carousel__hero">
-      <h2 class="dell-ai-carousel__hero-title">
+    <div class="dell-ai-carousel-hero">
+      <h2 class="dell-ai-carousel-hero-title">
         ${heroTitle}
       </h2>
 
-      <div class="dell-ai-carousel__hero-desc">
+      <div class="dell-ai-carousel-hero-desc">
         ${heroDesc}
       </div>
     </div>
 
-    <div class="dell-ai-carousel__shell">
+    <div class="dell-ai-carousel-shell">
 
       <button
-        class="dell-ai-carousel__arrow dell-ai-carousel__arrow--prev"
+        class="dell-ai-carousel-arrow dell-ai-carousel-arrow-prev"
         aria-label="Previous slide"
       >
         &#8592;
       </button>
 
-      <div class="dell-ai-carousel__track-wrapper">
-        <div class="dell-ai-carousel__track"></div>
+      <div class="dell-ai-carousel-track-wrapper">
+        <div class="dell-ai-carousel-track"></div>
       </div>
 
       <button
-        class="dell-ai-carousel__arrow dell-ai-carousel__arrow--next"
+        class="dell-ai-carousel-arrow dell-ai-carousel-arrow-next"
         aria-label="Next slide"
       >
         &#8594;
@@ -171,17 +171,17 @@ export default function decorate(block) {
 
     </div>
 
-    <div class="dell-ai-carousel__dots"></div>
+    <div class="dell-ai-carousel-dots"></div>
   `;
 
   /* =========================
      ELEMENT REFERENCES
   ========================= */
 
-  const track = block.querySelector('.dell-ai-carousel__track');
-  const dotsContainer = block.querySelector('.dell-ai-carousel__dots');
-  const prevButton = block.querySelector('.dell-ai-carousel__arrow--prev');
-  const nextButton = block.querySelector('.dell-ai-carousel__arrow--next');
+  const track = block.querySelector('.dell-ai-carousel-track');
+  const dotsContainer = block.querySelector('.dell-ai-carousel-dots');
+  const prevButton = block.querySelector('.dell-ai-carousel-arrow-prev');
+  const nextButton = block.querySelector('.dell-ai-carousel-arrow-next');
 
   /* =========================
      STATE
@@ -199,10 +199,10 @@ export default function decorate(block) {
     track.style.transform = `translateX(-${currentSlide * 100}%)`;
 
     dotsContainer
-      .querySelectorAll('.dell-ai-carousel__dot')
+      .querySelectorAll('.dell-ai-carousel-dot')
       .forEach((dot, index) => {
         dot.classList.toggle(
-          'dell-ai-carousel__dot--active',
+          'dell-ai-carousel-dot-active',
           index === currentSlide,
         );
       });
@@ -232,7 +232,7 @@ export default function decorate(block) {
     dotsContainer.innerHTML = buildDots(totalSlides, currentSlide);
 
     dotsContainer
-      .querySelectorAll('.dell-ai-carousel__dot')
+      .querySelectorAll('.dell-ai-carousel-dot')
       .forEach((dot) => {
         dot.addEventListener('click', () => {
           goToSlide(Number(dot.dataset.index));
