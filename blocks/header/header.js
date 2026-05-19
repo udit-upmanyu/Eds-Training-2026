@@ -122,31 +122,25 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
 function buildBreadcrumbItems() {
   const { pathname } = window.location;
 
-  // Honour an explicit breadcrumb override defined in page metadata
-  // (add  "breadcrumbtitle: My Custom Label"  to the page's metadata block)
   const customTitle = getMetadata('breadcrumbtitle')
     || getMetadata('og:title')
     || document.title
     || '';
 
-  // Split path into non-empty segments: "/a/b/c" → ["a","b","c"]
   const segments = pathname.split('/').filter(Boolean);
 
-  // Always start with Home
   const items = [{ label: 'Home', url: '/' }];
 
-  segments.forEach((segment, idx) => {
-    const url = `/${segments.slice(0, idx + 1).join('/')}`;
-    const isLast = idx === segments.length - 1;
+  segments.forEach((segment, index) => {
+    const url = `/${segments.slice(0, index + 1).join('/')}`;
+    const isLast = index === segments.length - 1;
 
-    // Human-readable label: kebab-case → Title Case
     const autoLabel = segment
       .replace(/-/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
 
     items.push({
       label: isLast ? customTitle || autoLabel : autoLabel,
-      // Last crumb has no link (current page)
       url: isLast ? null : url,
     });
   });
@@ -163,7 +157,6 @@ function buildBreadcrumbItems() {
 function createBreadcrumb() {
   const items = buildBreadcrumbItems();
 
-  // No breadcrumb needed on the home page
   if (items.length <= 1) return null;
 
   const nav = document.createElement('nav');
@@ -173,7 +166,7 @@ function createBreadcrumb() {
   const ol = document.createElement('ol');
   ol.className = 'breadcrumb-list';
 
-  items.forEach(({ label, url }, idx) => {
+  items.forEach(({ label, url }) => {
     const li = document.createElement('li');
     li.className = 'breadcrumb-item';
 
@@ -183,15 +176,11 @@ function createBreadcrumb() {
       a.textContent = label;
       li.append(a);
     } else {
-      // Current page — mark as active for a11y
       const span = document.createElement('span');
       span.textContent = label;
       span.setAttribute('aria-current', 'page');
       li.append(span);
     }
-
-    // Separator is added via CSS (::after pseudo-element) so it stays out of
-    // the accessibility tree. No extra markup needed here.
 
     ol.append(li);
   });
@@ -265,7 +254,6 @@ export default async function decorate(block) {
   navWrapper.append(nav);
 
   // ── Breadcrumb ──────────────────────────────────────────────────────────
-  // Rendered outside the <nav> so it sits beneath the navigation bar.
   const breadcrumb = createBreadcrumb();
   if (breadcrumb) navWrapper.append(breadcrumb);
   // ────────────────────────────────────────────────────────────────────────
