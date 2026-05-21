@@ -270,3 +270,47 @@ header nav .nav-sections ul > li > ul > li {
 header nav .nav-tools {
   grid-area: tools;
 }
+
+/* breadcrumb */
+header .breadcrumb {
+  background-color: var(--light-color);
+  border-top: 1px solid var(--dark-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+}
+
+header .breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0 auto;
+  max-width: 1248px;
+  padding: 8px 24px;
+}
+
+header .breadcrumb-item + .breadcrumb-item::before {
+  content: '/';
+  margin: 0 8px;
+  color: var(--dark-color);
+}
+
+header .breadcrumb-item a:any-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+header .breadcrumb-item a:hover {
+  text-decoration: underline;
+}
+
+header .breadcrumb-item span[aria-current='page'] {
+  font-weight: 500;
+}
+
+@media (width >= 900px) {
+  header .breadcrumb-list {
+    max-width: 1264px;
+    padding: 8px 32px;
+  }
+}

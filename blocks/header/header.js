@@ -108,6 +108,91 @@ function toggleMenu(nav, navSections, forceExpanded = null) {
   }
 }
 
+// ---------------------------------------------------------------------------
+// BREADCRUMB
+// ---------------------------------------------------------------------------
+
+/**
+ * Builds breadcrumb items from the current page path.
+ * Each path segment becomes one crumb. The page title (from <title> or
+ * the "og:title" / "breadcrumbtitle" metadata) is used for the last crumb.
+ *
+ * @returns {Array<{label: string, url: string|null}>}
+ */
+function buildBreadcrumbItems() {
+  const { pathname } = window.location;
+
+  const customTitle = getMetadata('breadcrumbtitle')
+    || getMetadata('og:title')
+    || document.title
+    || '';
+
+  const segments = pathname.split('/').filter(Boolean);
+
+  const items = [{ label: 'Home', url: '/' }];
+
+  segments.forEach((segment, index) => {
+    const url = `/${segments.slice(0, index + 1).join('/')}`;
+    const isLast = index === segments.length - 1;
+
+    const autoLabel = segment
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+    items.push({
+      label: isLast ? customTitle || autoLabel : autoLabel,
+      url: isLast ? null : url,
+    });
+  });
+
+  return items;
+}
+
+/**
+ * Creates and returns the breadcrumb <nav> element.
+ * Skips rendering on the home page (only one crumb = "Home").
+ *
+ * @returns {Element|null}
+ */
+function createBreadcrumb() {
+  const items = buildBreadcrumbItems();
+
+  if (items.length <= 1) return null;
+
+  const nav = document.createElement('nav');
+  nav.className = 'breadcrumb';
+  nav.setAttribute('aria-label', 'Breadcrumb');
+
+  const ol = document.createElement('ol');
+  ol.className = 'breadcrumb-list';
+
+  items.forEach(({ label, url }) => {
+    const li = document.createElement('li');
+    li.className = 'breadcrumb-item';
+
+    if (url) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.textContent = label;
+      li.append(a);
+    } else {
+      const span = document.createElement('span');
+      span.textContent = label;
+      span.setAttribute('aria-current', 'page');
+      li.append(span);
+    }
+
+    ol.append(li);
+  });
+
+  nav.append(ol);
+  return nav;
+}
+
+// ---------------------------------------------------------------------------
+// DECORATE (main export)
+// ---------------------------------------------------------------------------
+
 /**
  * loads and decorates the header, mainly the nav
  * @param {Element} block The header block element
@@ -167,5 +252,11 @@ export default async function decorate(block) {
   const navWrapper = document.createElement('div');
   navWrapper.className = 'nav-wrapper';
   navWrapper.append(nav);
+
+  // ── Breadcrumb ──────────────────────────────────────────────────────────
+  const breadcrumb = createBreadcrumb();
+  if (breadcrumb) navWrapper.append(breadcrumb);
+  // ────────────────────────────────────────────────────────────────────────
+
   block.append(navWrapper);
 }
