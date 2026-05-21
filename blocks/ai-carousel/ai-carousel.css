@@ -1,0 +1,374 @@
+/* carousel.css — Dell AI Outcomes Carousel (EDS implementation) */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+
+main > .section > div:has(.dell-ai-carousel) {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+main > .section.carousel-container > div {
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+
+.dell-ai-carousel,
+.dell-ai-carousel *,
+.dell-ai-carousel *::before,
+.dell-ai-carousel *::after {
+  box-sizing: border-box;
+}
+
+.dell-ai-carousel {
+  background-color: #0b0f19;
+  width: 100%;
+  max-width: 100%;
+  padding: 64px 0 48px;
+  font-family: Roboto, sans-serif;
+  overflow: hidden visible;
+}
+
+/* ─────────────────────────────────────────────
+   HERO SECTION
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-hero {
+  width: 100%;
+  max-width: 1600px;
+  margin: 50px auto 72px;
+  padding: 0 150px;
+  text-align: center;
+}
+
+/* Aggressive color override — targets EDS-injected nested elements too */
+.dell-ai-carousel-hero-title,
+.dell-ai-carousel-hero-title *,
+h2.dell-ai-carousel-hero-title {
+  color: #ebf1f6 !important;
+}
+
+.dell-ai-carousel-hero-desc,
+.dell-ai-carousel-hero-desc *,
+.dell-ai-carousel-hero-desc p {
+  color: #ebf1f6 !important;
+}
+
+.dell-ai-carousel-hero-title {
+  font-family: Roboto, Arial, Helvetica, sans-serif !important;
+  color: #ebf1f6 !important;
+  margin: 0 auto;
+  font-weight: 300;
+  letter-spacing: -0.005em;
+  font-size: 48px;
+  line-height: 56px;
+  max-width: 1400px;
+  padding: 32px;
+  text-align: center;
+}
+
+.dell-ai-carousel-hero-desc {
+  font-family: Roboto, Arial, Helvetica, sans-serif !important;
+  color: #ebf1f6 !important;
+  margin: 0 auto;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.5;
+  max-width: 1100px;
+  text-align: center;
+}
+
+/* ─────────────────────────────────────────────
+   SHELL — [arrow] [track] [arrow]
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-shell {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 190px;
+}
+
+/* ─────────────────────────────────────────────
+   ARROW BUTTONS
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-arrow {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1.5px solid rgb(255 255 255 / 30%);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+  align-self: center;
+  position: relative;
+  z-index: 1;
+}
+
+.dell-ai-carousel-arrow-prev { margin-right: 12px; }
+.dell-ai-carousel-arrow-next { margin-left: 12px; }
+
+.dell-ai-carousel-arrow:hover {
+  border-color: #fff;
+  background: rgb(255 255 255 / 8%);
+}
+
+.dell-ai-carousel-arrow:disabled {
+  opacity: 0.22;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* ─────────────────────────────────────────────
+   TRACK WRAPPER
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-track-wrapper {
+  flex: 1 1 auto;
+  overflow: hidden;
+  min-width: 0;
+  max-width: calc(100% - 112px);
+}
+
+/* ─────────────────────────────────────────────
+   SLIDING TRACK
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-track {
+  display: flex;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+/* ─────────────────────────────────────────────
+   SLIDE
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-slide {
+  display: flex;
+  gap: 20px;
+  flex: 0 0 100%;
+  width: 100%;
+  align-items: stretch;
+  justify-content: center;
+}
+
+/* ─────────────────────────────────────────────
+   CARDS
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-card {
+  background-color: #293b4d;
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 8px;
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 300px;
+  max-width: 450px;
+}
+
+.dell-ai-carousel-card-title {
+  font-family: Roboto, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff !important;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+.dell-ai-carousel-card-desc {
+  font-family: Roboto, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #d6e2ef !important;
+  line-height: 1.8;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.dell-ai-carousel-card-desc * {
+  color: #d6e2ef !important;
+}
+
+.dell-ai-carousel-card-link {
+  font-family: Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 28px;
+  color: #4d9fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 0.2s;
+  width: fit-content;
+}
+
+.dell-ai-carousel-card-link::after {
+  content: '';
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+  background-color: #4d9fff;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6'/%3E%3Cpolyline points='15 3 21 3 21 9'/%3E%3Cline x1='10' y1='14' x2='21' y2='3'/%3E%3C/svg%3E");
+  mask-size: contain;
+  mask-repeat: no-repeat;
+}
+
+.dell-ai-carousel-card-link:hover { color: #80bfff; }
+.dell-ai-carousel-card-link:hover::after { background-color: #80bfff; }
+
+/* ─────────────────────────────────────────────
+   DOTS
+   ───────────────────────────────────────────── */
+.dell-ai-carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.dell-ai-carousel-dot {
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 30%);
+  transition: background 0.25s, width 0.25s, border-radius 0.25s;
+  display: block;
+  flex-shrink: 0;
+}
+
+.dell-ai-carousel-dot-active {
+  width: 32px;
+  border-radius: 5px;
+  background: #2e7cf6;
+}
+
+/* =====================================================
+   RESPONSIVE BREAKPOINTS
+   ===================================================== */
+
+/* ── Tablet ── */
+@media (width <= 1023px) and (width >= 768px) {
+
+  .dell-ai-carousel-shell { padding: 0 12px; }
+
+  .dell-ai-carousel-hero {
+    padding: 0 24px;
+    margin-bottom: 56px;
+  }
+
+  .dell-ai-carousel-hero-title {
+    font-size: 42px;
+    line-height: 52px;
+    padding-bottom: 24px;
+  }
+
+  .dell-ai-carousel-hero-desc {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .dell-ai-carousel-arrow {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .dell-ai-carousel-track-wrapper { max-width: calc(100% - 104px); }
+
+  .dell-ai-carousel-slide { gap: 16px; }
+
+  .dell-ai-carousel-card {
+    padding: 28px 22px 22px;
+    min-height: 340px;
+  }
+}
+
+/* ── Mobile ── */
+@media (width <= 767px) {
+
+  .dell-ai-carousel { padding: 40px 0 36px; }
+
+  .dell-ai-carousel-hero {
+    padding: 0 20px;
+    margin-top: 60px;
+    margin-bottom: 40px;
+  }
+
+  .dell-ai-carousel-hero-title {
+    font-size: 28px;
+    line-height: 36px;
+    padding: 16px 0 20px;
+    word-break: manual;
+    overflow: visible;
+  }
+
+  .dell-ai-carousel-hero-desc {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .dell-ai-carousel-shell { padding: 0 10px; }
+
+  .dell-ai-carousel-arrow {
+    flex: 0 0 36px;
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+
+  .dell-ai-carousel-arrow-prev { margin-right: 8px; }
+  .dell-ai-carousel-arrow-next { margin-left: 8px; }
+
+  .dell-ai-carousel-track-wrapper { max-width: calc(100% - 92px); }
+
+  .dell-ai-carousel-card {
+    border-radius: 10px;
+    min-height: 300px;
+    padding: 28px 20px 20px;
+    flex: 1 1 0;
+    max-width: 100%;
+  }
+
+  .dell-ai-carousel-slide { gap: 0; }
+}
+
+/* ─────────────────────────────────────────────
+   CONTAINER — no scrollbar, full width
+   ───────────────────────────────────────────── */
+.carousel-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+}
+
+.carousel-container .carousel-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.carousel-container .dell-ai-carousel {
+  width: 100%;
+  max-width: 100%;
+}
+
